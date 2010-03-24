@@ -1,3 +1,18 @@
+# General flow:
+# 1. new
+# 2. payment
+# 3A. If paypal, then go to PayPal's site
+# 3A1. Upon return from PayPal, confirm_paypal
+# 3A2. purchase_paypal
+# 3A3. finish_order
+# 3A4. thank_you
+# 3B. Else
+# 3B1. purchase
+# 3B2A. If credit card, then payment_cc
+# 3B2B. If Google Checkout, then payment_gcheckout
+# 3B3 - For both credit card and Google checkout, next is purchase
+# 3B3A - if credit card, then next is: finish_order and then thank_you
+# 3B3B - if Google Checkout, then next is: order.send_to_google_checkout - then it is all at Google's site, I think.
 
 class Store::OrderController < ApplicationController
   layout "store"
@@ -198,6 +213,7 @@ class Store::OrderController < ApplicationController
     end
   end
 
+  # This is the main re-entry point from the PayPal checkout workflow, after returning from PayPal's site.
   def confirm_paypal
     render :action => 'no_order', :layout => 'error' and return if session[:order_id] == nil
 
@@ -233,6 +249,7 @@ class Store::OrderController < ApplicationController
     session[:order_id] = @order.id
   end
 
+  # This is the next step in the PayPal checkout workflow after confirm_paypal.
   def purchase_paypal
     render :action => 'no_order', :layout => 'error' and return if session[:order_id] == nil
 

@@ -30,5 +30,7 @@ class StoreOrderControllerTest < Test::Unit::TestCase
     # No payment type yet
     assert_nil assigns(:payment_type)
   end
+  
+  
 
 end
