@@ -168,27 +168,27 @@ class Store::OrderController < ApplicationController
         render :action => 'failed', :layout => 'error' and return
       end
     end
-
+    
     # We need the next two ugly lines because Safari's form autofill sucks
     params[:order][:address1] = params[:address1]
     params[:order][:address2] = params[:address2]
-
+    
     params[:order].keys.each { |x| params[:order][x] = params[:order][x].strip if params[:order][x] != nil }
-
+    
     @order = Order.new(params[:order])
-
+    
     # the order in the session is a bogus temporary one
     @order.add_form_items(params[:items])
-
+    
     if params[:coupon]
       @order.coupon_text = params[:coupon]
     end
-
+    
     @order.order_time = Time.now()
     @order.status = 'S'
     session[:order_id] = @order.id
     session[:items] = nil
-
+    
     if not @order.save()
       flash[:error] = 'Please fill out all fields'
       if @order.cc_order?
@@ -197,7 +197,7 @@ class Store::OrderController < ApplicationController
         render :action => 'payment_gcheckout' and return
       end
     end
-
+    
     # Actually send out the payload
     if @order.cc_order?
       success = @order.paypal_directcharge(request)

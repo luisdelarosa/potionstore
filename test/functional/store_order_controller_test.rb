@@ -31,6 +31,24 @@ class StoreOrderControllerTest < Test::Unit::TestCase
     assert_nil assigns(:payment_type)
   end
   
-  
+  def test_purchase_redirects_to_index_if_no_order_and_no_items
+    post :purchase
+    assert_redirected_to :action => :index
+  end
+
+  def test_purchase_redirects_to_index_if_no_order
+    post :purchase, :order => {}
+    assert_redirected_to :action => :index
+  end
+
+  def test_purchase_redirects_to_index_if_no_items
+    post :purchase, :items => {}
+    assert_redirected_to :action => :index
+  end
+
+  # def test_purchase_should_not_redirect_to_index
+  #   post :purchase, :order => {"foo" => "bar"}, :items => {:foo => :bar}
+  #   # TODO implement
+  # end
 
 end
