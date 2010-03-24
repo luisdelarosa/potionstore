@@ -16,5 +16,19 @@ class StoreOrderControllerTest < Test::Unit::TestCase
     get :index
     assert_response :success
   end
+    
+  def test_new_store_order
+    get :new
+    assert_response :success
+    
+    # No order ID yet
+    assert_nil @response.session[:order_id]
+    
+    # No quantities yet
+    assert_equal Hash.new, assigns(:qty)
+    
+    # No payment type yet
+    assert_nil assigns(:payment_type)
+  end
 
 end
