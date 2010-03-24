@@ -1,3 +1,20 @@
+# == Schema Information
+#
+# Table name: coupons
+#
+#  id            :integer(4)      not null, primary key
+#  code          :string(16)      default(""), not null
+#  description   :string(64)      default(""), not null
+#  coupon        :string(64)      default(""), not null
+#  product_code  :string(16)      default(""), not null
+#  amount        :decimal(10, 2)  default(0.0), not null
+#  percentage    :integer(4)
+#  used_count    :integer(4)
+#  use_limit     :integer(4)      default(1), not null
+#  creation_time :datetime
+#  numdays       :integer(4)      default(0), not null
+#
+
 class Coupon < ActiveRecord::Base
   def initialize
     super()
@@ -19,3 +36,4 @@ class Coupon < ActiveRecord::Base
   end
 
 end
+

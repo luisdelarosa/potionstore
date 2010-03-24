@@ -1,3 +1,30 @@
+# == Schema Information
+#
+# Table name: orders
+#
+#  id                 :integer(4)      not null, primary key
+#  coupon_id          :integer(4)
+#  status             :string(1)       default("P"), not null
+#  email              :string(128)     default(""), not null
+#  order_time         :datetime
+#  first_name         :string(64)      default("")
+#  licensee_name      :string(128)
+#  last_name          :string(64)      default("")
+#  company            :string(64)
+#  address1           :string(64)      default("")
+#  address2           :string(64)
+#  city               :string(64)      default("")
+#  state              :string(64)      default("")
+#  zipcode            :string(64)      default("")
+#  country            :string(2)       default(""), not null
+#  payment_type       :string(16)
+#  ccnum              :string(32)
+#  comment            :text
+#  failure_code       :integer(4)
+#  failure_reason     :string(255)
+#  transaction_number :string(64)
+#
+
 class Order < ActiveRecord::Base
   has_many :line_items
   belongs_to :coupon

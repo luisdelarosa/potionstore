@@ -1,3 +1,15 @@
+# == Schema Information
+#
+# Table name: line_items
+#
+#  id          :integer(4)      not null, primary key
+#  order_id    :integer(4)      default(0), not null
+#  product_id  :integer(4)      default(0), not null
+#  quantity    :integer(4)      default(0), not null
+#  unit_price  :decimal(10, 2)  default(0.0), not null
+#  license_key :string(64)
+#
+
 require 'licensekey'
 
 class LineItem < ActiveRecord::Base
@@ -49,3 +61,4 @@ class LineItem < ActiveRecord::Base
   end
 
 end
+
