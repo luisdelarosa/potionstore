@@ -50,25 +50,36 @@ class StoreOrderControllerTest < Test::Unit::TestCase
     # Stub out PayPal so we don't call it during testing.
     Order.any_instance.stubs(:paypal_directcharge).returns(true)
     
-    post :purchase, :order => {
-      "payment_type" => "amex",
-      "first_name" => "Steve",
-      "last_name" => "Jobs",
-      "licensee_name" => "Steve Jobs", # This concatenation should be moved to the controller method.
-      "email" => "sjobs@apple.com",
-      "address1" => "123 Infinite Loop",
-      "city" => "Cupertino",
-      "state" => "CA",
-      "zipcode" => "12345",
-      "country" => "US",
-      "cc_number" => "1234567890",
-      "cc_month" => "12",
-      "cc_year" => "2020",
-      "cc_code" => "789"
+    product = Product.create(:price => 24.99)
+    assert product
+    
+    # This will create one new order with one new line item.
+    assert_difference ["Order.count", "LineItem.count"] do
+    
+      post :purchase, :order => {
+        "payment_type" => "amex",
+        "first_name" => "Steve",
+        "last_name" => "Jobs",
+        "licensee_name" => "Steve Jobs", # This concatenation should be moved to the controller method.
+        "email" => "sjobs@apple.com",
+        "address1" => "123 Infinite Loop",
+        "city" => "Cupertino",
+        "state" => "CA",
+        "zipcode" => "12345",
+        "country" => "US",
+        "cc_number" => "1234567890",
+        "cc_month" => "12",
+        "cc_year" => "2020",
+        "cc_code" => "789"
       
-    }, :items => [],
-    # It is weird that we have to send address1 again here.
-    "address1" => "123 Infinite Loop"
+      },
+      "items" => {
+        product.id => 1
+      },
+      # It is weird that we have to send address1 again here.
+      "address1" => "123 Infinite Loop"
+    end    
+    
     
     assert_redirected_to :action => :thankyou
   end
