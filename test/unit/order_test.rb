@@ -109,5 +109,25 @@ class OrderTest < Test::Unit::TestCase
   end
   
   # TODO write tests for checking address and credit card info
-  
+
+  def test_add_form_items
+    order = Order.new
+    
+    product = Product.create(:price => 24.99)
+    assert product
+    
+    items = {
+      product.id => 1
+    }
+    line_item_count = order.line_items.size
+    
+    assert_equal true, order.add_form_items(items)
+        
+    assert_equal line_item_count + 1, order.line_items.size
+    
+    line_item = order.line_items.first
+    assert_equal 24.99, line_item.unit_price
+    assert_equal 1, line_item.quantity
+    assert_equal product.id, line_item.product_id
+  end
 end
